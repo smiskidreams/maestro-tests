@@ -1,0 +1,27 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_gender.yaml
+
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/gender_woman"
+    timeout: 10000
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/gender_woman"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Postcondition
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/women"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/women"
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/men"
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/everyone"

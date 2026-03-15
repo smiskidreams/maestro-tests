@@ -1,0 +1,45 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_education.yaml # Start from degree screen
+
+# 1) Try to continue first (in case Bachelors is already selected)
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# 2) Wait for the next screen
+- extendedWaitUntil:
+    visible: "Where did you study?"
+    timeout: 10000
+    optional: true
+
+# 3) If we still didn't get to the next screen, select Bachelors then try Next again
+- runFlow:
+    when:
+      notVisible: "Where did you study?"
+    commands:
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/prof_degree_bachelors_one"
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/onboarding__next"
+      - extendedWaitUntil:
+          visible: "Where did you study?"
+          timeout: 10000
+
+# 4) Final assert
+- assertVisible: "Where did you study?"
+
+# Wait for Next button before tapping
+- extendedWaitUntil:
+    visible: "Where did you study?"
+    timeout: 10000
+- eraseText: 20
+- inputText: "NYU"
+

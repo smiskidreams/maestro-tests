@@ -1,0 +1,40 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_birthday_or_relationship.yaml
+
+# Only set DOB if we are actually on the DOB picker screen
+- runFlow:
+    when:
+      visible:
+        id: "com.coffeemeetsbagel:id/onboarding_age__year"
+    commands:
+      - runFlow: ../helpers/set_dob_year_2000.yaml
+
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/onboarding__next"
+          timeout: 10000
+
+      - tapOn:
+           id: "com.coffeemeetsbagel:id/onboarding__next"
+
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/primary_button"
+          timeout: 10000
+
+      - assertVisible:
+           id: "com.coffeemeetsbagel:id/primary_button"
+
+      - tapOn:
+           id: "com.coffeemeetsbagel:id/primary_button"
+
+# Wait for relationship screen
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/message_view"
+    timeout: 10000
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/message_view"
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/marriage"

@@ -1,0 +1,127 @@
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/C:/Users/terxi/maestro/maestro/lib/jansi-2.4.1.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by io.netty.util.internal.PlatformDependent0$4 (file:/C:/Users/terxi/maestro/maestro/lib/netty-common-4.1.97.Final.jar)
+WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$4
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+Running on RFCT118FBVK
+ > Flow 08_job_title_input
+Run ../states/at_job_title.yaml...
+  Run ./at_education_school.yaml...
+    Run ./at_education.yaml...
+      Run ./at_prompt.yaml...
+        Run ./at_photos_completed.yaml...
+          Run ./at_photos.yaml...
+            Run ./at_gender_preference.yaml...
+              Run ./at_gender.yaml...
+                Run ./at_birthday_or_relationship.yaml...
+                  Assert that id: com.coffeemeetsbagel:id/landing__sign_up is visible... COMPLETED
+                  Tap on id: com.coffeemeetsbagel:id/landing__sign_up... COMPLETED
+                  Assert that id: com.coffeemeetsbagel:id/location_title is visible... COMPLETED
+                  Tap on id: com.coffeemeetsbagel:id/onboarding__next... COMPLETED
+                  Assert that (Optional) id: com.android.permissioncontroller:id/permission_message is visible...                  Run flow when id: com.android.permissioncontroller:id/permission_message is visible...
+                  Run flow when id: com.android.permissioncontroller:id/permission_message is visible...
+                    Tap on id: com.android.permissioncontroller:id/permission_allow_foreground_only_button...                  Run flow when id: com.android.permissioncontroller:id/permission_message is visible... RUNNING
+                  Run flow when id: com.android.permissioncontroller:id/permission_message is visible... RUNNING
+                  Run ${output.abortFlow = false}... COMPLETED
+                  Assert that (Optional) id: com.coffeemeetsbagel:id/phone_number_input_country_picker is visible...                  Run flow when id: com.coffeemeetsbagel:id/phone_number_input_country_picker is not visible...
+                  Run flow when id: com.coffeemeetsbagel:id/phone_number_input_country_picker is not visible...
+io.grpc.StatusRuntimeException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:275)
+	at io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:256)
+	at io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:169)
+	at maestro_android.MaestroDriverGrpc$MaestroDriverBlockingStub.deviceInfo(MaestroDriverGrpc.java:740)
+	at maestro.drivers.AndroidDriver.deviceInfo$lambda$4(AndroidDriver.kt:211)
+	at maestro.drivers.AndroidDriver.runDeviceCall(AndroidDriver.kt:1262)
+	at maestro.drivers.AndroidDriver.deviceInfo(AndroidDriver.kt:210)
+	at maestro.ViewHierarchy$Companion.from-8JJjmZI(ViewHierarchy.kt:28)
+	at maestro.Maestro.viewHierarchy-c1iYVAs(Maestro.kt:415)
+	at maestro.Maestro.viewHierarchy-c1iYVAs$default(Maestro.kt:414)
+	at maestro.Maestro.findElementWithTimeout_AE3g2Tc$lambda$9(Maestro.kt:425)
+	at maestro.utils.MaestroTimer.withTimeout(MaestroTimer.kt:16)
+	at maestro.Maestro.findElementWithTimeout-AE3g2Tc(Maestro.kt:424)
+	at maestro.Maestro.findElementWithTimeout-AE3g2Tc$default(Maestro.kt:418)
+	at maestro.orchestra.Orchestra.findElement(Orchestra.kt:1202)
+	at maestro.orchestra.Orchestra.evaluateCondition(Orchestra.kt:816)
+	at maestro.orchestra.Orchestra.assertConditionCommand(Orchestra.kt:417)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:338)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeSubflowCommands(Orchestra.kt:870)
+	at maestro.orchestra.Orchestra.runSubFlow(Orchestra.kt:927)
+	at maestro.orchestra.Orchestra.runFlowCommand(Orchestra.kt:769)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:354)
+	at maestro.orchestra.Orchestra.executeCommands(Orchestra.kt:252)
+	at maestro.orchestra.Orchestra.runFlow(Orchestra.kt:170)
+	at maestro.cli.runner.MaestroCommandRunner.runCommands(MaestroCommandRunner.kt:196)
+	at maestro.cli.runner.TestRunner$runSingle$result$1$1.invokeSuspend(TestRunner.kt:75)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at maestro.cli.runner.TestRunner.runSingle$lambda$0(TestRunner.kt:74)
+	at maestro.cli.runner.TestRunner.runCatching-ta8aW1Q(TestRunner.kt:200)
+	at maestro.cli.runner.TestRunner.runSingle(TestRunner.kt:65)
+	at maestro.cli.command.TestCommand.runSingleFlow(TestCommand.kt:531)
+	at maestro.cli.command.TestCommand.runShardSuite$lambda$10(TestCommand.kt:500)
+	at maestro.cli.session.MaestroSessionManager.newSession(MaestroSessionManager.kt:129)
+	at maestro.cli.session.MaestroSessionManager.newSession$default(MaestroSessionManager.kt:65)
+	at maestro.cli.command.TestCommand.runShardSuite(TestCommand.kt:465)
+	at maestro.cli.command.TestCommand.access$runShardSuite(TestCommand.kt:80)
+	at maestro.cli.command.TestCommand$handleSessions$1$results$1$1.invokeSuspend(TestCommand.kt:424)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:111)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:99)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:585)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:802)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:706)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:693)
+
+Terminate batch job (Y/N)? 
+^C

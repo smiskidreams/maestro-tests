@@ -1,0 +1,39 @@
+appId: com.coffeemeetsbagel
+---
+# Wait for device gallery entry point
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/photo__device"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/photo__device"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/photo__device"
+
+# Wait for gallery UI
+- extendedWaitUntil:
+    visible: "Collections"
+    timeout: 10000
+
+- assertVisible: "Collections"
+- tapOn: "Collections"
+
+# Wait for Favourites folder
+- extendedWaitUntil:
+    visible: "Favourites"
+    timeout: 10000
+
+- assertVisible: "Favourites"
+- tapOn: "Favourites"
+
+# Pick specific photo ID (passed in)
+- tapOn:
+    point: ${PHOTO_POINT}
+
+# Wait for Done button to be interactable
+- extendedWaitUntil:
+    visible: "Done"
+    timeout: 10000
+
+- tapOn: "Done"

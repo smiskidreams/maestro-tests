@@ -1,0 +1,12 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_height.yaml
+
+# Do the one-swipe set and proceed
+- runFlow: ../helpers/set_height.yaml
+
+# Confirm Next button exists
+- extendedWaitUntil:
+    visible: 
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000

@@ -1,0 +1,40 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: 02_auth_ensure_logged_in.yaml
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/cmb_bottom_nav_item_title"
+    index: 4
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/cmb_toolbar_settings"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/switch_membership_active"
+
+- assertVisible:
+    text: "Pause my account"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/cta_primary"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/reason_text"
+    index: 7
+
+- tapOn: # Continue button 
+    id: "com.coffeemeetsbagel:id/textView_done"
+
+# Only proceed if "Other" is selected
+- runFlow:
+    when:
+    when:
+      visible:
+        id: "com.coffeemeetsbagel:id/checkbox_other"
+    commands:
+      - tapOn:
+          text: "DONE"
+
+
+
+

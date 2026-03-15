@@ -1,0 +1,9 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_job_title.yaml
+
+# Set value and continue
+- runFlow:
+    file: ../helpers/set_job_title.yaml
+    env:
+      JOB_TITLE_TEXT: "Corporate victim"

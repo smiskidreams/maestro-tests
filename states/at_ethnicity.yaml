@@ -1,0 +1,24 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_height.yaml
+
+# Continue from Height screen to Ethnicity screen
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Postcondition: Ethnicity screen is shown
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/message"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/message"

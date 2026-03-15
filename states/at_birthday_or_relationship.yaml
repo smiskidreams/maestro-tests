@@ -1,0 +1,333 @@
+appId: com.coffeemeetsbagel
+---
+# Root anchor: fresh app → end on phone screen
+
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/landing__sign_up"
+    timeout: 30000
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/landing__sign_up"
+
+# Location page
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/location_title"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Optional location permission
+- extendedWaitUntil:
+    visible:
+      id: com.android.permissioncontroller:id/permission_message
+    timeout: 10000
+    optional: true
+
+# If it appeared, tap Allow
+- runFlow:
+    when:
+      visible:
+        id: com.android.permissioncontroller:id/permission_message
+    commands:
+      - tapOn:
+          id: com.android.permissioncontroller:id/permission_allow_foreground_only_button
+
+# --- Known bug handling: location can load ~20s then show an error dialog ---
+# Initialize abort flag (used to "quit" the rest of the flow cleanly)
+- evalScript: ${output.abortFlow = false}
+
+# Wait up to 20s for phone screen to appear (normal success path)
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/phone_number_input_country_picker"
+    timeout: 30000
+    optional: true
+
+# If phone screen still not visible after 20s, treat as known location bug.
+# Dismiss dialog if it exists, then exit early (PASS-by-exit).
+- runFlow:
+    when:
+      notVisible:
+        id: "com.coffeemeetsbagel:id/phone_number_input_country_picker"
+    commands:
+      - evalScript: '${output.note = "KNOWN_BUG_LOCATION_ERROR - phone screen not reached after 20s. Exiting early."}'
+      - takeScreenshot: "KNOWN_BUG_LOCATION_ERROR"
+
+      # If the dialog shows up, dismiss it (optional cleanup)
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/dialog_stacked_buttons_title"
+          timeout: 30000
+          optional: true
+
+      - runFlow:
+          when:
+            visible:
+              id: "com.coffeemeetsbagel:id/dialog_stacked_buttons_title"
+          commands:
+            - tapOn: "Ok"
+      - assertVisible: "THIS_TEXT_SHOULD_NEVER_EXIST_KNOWN_LOCATION_BUG"
+
+
+- runFlow:
+    when:
+      true: ${!output.abortFlow}
+    commands:
+        # Final assert (this is the only hard assert)
+        - assertVisible:
+            id: "com.coffeemeetsbagel:id/phone_number_input_country_picker"
+        - tapOn:
+            id: "com.coffeemeetsbagel:id/phone_number_input_country_picker"
+        - inputText: "Sweden"
+
+        - assertVisible:
+            id: "com.coffeemeetsbagel:id/country_picker_country"
+        - tapOn:
+            id: "com.coffeemeetsbagel:id/country_picker_country"
+
+        - tapOn:
+            id: "com.coffeemeetsbagel:id/phone_number_input_edittext"
+        - inputText: "701234572"
+
+        - extendedWaitUntil:
+            visible:
+                id: "com.coffeemeetsbagel:id/phone_number_input_get_started"
+            timeout: 10000
+        - tapOn:
+            id: "com.coffeemeetsbagel:id/phone_number_input_get_started"
+
+        # Wait for OTP input field to be fully visible
+        - extendedWaitUntil:
+            visible:
+                id: "com.coffeemeetsbagel:id/verify__code_container"
+            timeout: 10000
+        - assertVisible:
+            id: "com.coffeemeetsbagel:id/verify__code_container"
+
+        # Give the OTP boxes a moment to fully render
+        - extendedWaitUntil:
+            visible:
+                id: "com.coffeemeetsbagel:id/verify__code_5"
+            timeout: 8000
+            optional: true
+
+        # Known bug: OTP sometimes shows 6 digits (verify__code_5 exists). Exit early and still pass.
+        - runFlow:
+            when:
+                visible:
+                    id: "com.coffeemeetsbagel:id/verify__code_5"
+            commands:
+                - evalScript: '${output.note = "Known bug - 6 OTP instead of 4. Exiting flow early."}'
+                - evalScript: ${output.abortFlow = true}
+                - takeScreenshot: "KNOWN_BUG_OTP_6_DIGITS"
+                - assertVisible: "THIS_TEXT_SHOULD_NEVER_EXIST_KNOWN_OTP_BUG"
+
+        # 4-digit OTP path (only if not aborted)
+        - runFlow:
+            when:
+                true: ${!output.abortFlow}
+            commands:
+                - tapOn:
+                    id: "com.coffeemeetsbagel:id/verify__code_3"
+                - eraseText: 4
+                - inputText: "0000"
+
+                - extendedWaitUntil:
+                    visible:
+                        id: "com.coffeemeetsbagel:id/verify__next"
+                    timeout: 10000
+                - tapOn:
+                    id: "com.coffeemeetsbagel:id/verify__next"
+
+                - extendedWaitUntil:
+                    visible:
+                        id: "com.coffeemeetsbagel:id/onboarding__next"
+                    timeout: 10000
+                - tapOn:
+                    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+                # Optional NOTIFICATION permission
+                - extendedWaitUntil:
+                    visible:
+                        id: com.android.permissioncontroller:id/permission_message
+                    timeout: 10000
+                    optional: true
+
+                # If it appeared, tap Allow
+                - runFlow:
+                    when:
+                        visible:
+                            id: com.android.permissioncontroller:id/permission_message
+                    commands:
+                        - tapOn:
+                            text: "Allow"
+
+                # Account already created → landed on main app/paywall
+                - extendedWaitUntil:
+                    visible: "See my likes now"
+                    timeout: 10000
+                    optional: true
+
+                - runFlow:
+                    when:
+                        visible: "See my likes now"
+                    commands:
+                        - evalScript: '${output.note = "Account already created - landed on home screen."}'
+                        - takeScreenshot: "ACCOUNT_CREATED"
+                        - assertVisible: "THIS_TEXT_SHOULD_NEVER_EXIST_ACCOUNT_CREATED"
+
+                - runFlow:
+                    when:
+                        visible: "Suggested"
+                    commands:
+                        - evalScript: '${output.note = "Account already created - landed on Suggested feed."}'
+                        - takeScreenshot: "ACCOUNT_CREATED"
+                        - assertVisible: "THIS_TEXT_SHOULD_NEVER_EXIST_ACCOUNT_CREATED"
+
+                - extendedWaitUntil:
+                    visible:
+                        text: "We’re Coffee Meets Bagel, the dating app for serious daters (that’s you!)"
+                    timeout: 10000
+                - tapOn:
+                    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+                - extendedWaitUntil:
+                    visible:
+                        text: "That means less swiping, and more great dates."
+                    timeout: 10000
+                - tapOn:
+                    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+                - extendedWaitUntil:
+                    visible:
+                        text: "Ready to meet yours?"
+                    timeout: 10000
+                - tapOn:
+                    id: "com.coffeemeetsbagel:id/continue_button"
+
+                # Name input (always overwrite for determinism)
+                - extendedWaitUntil:
+                    visible:
+                        id: "com.coffeemeetsbagel:id/first_name"
+                    timeout: 10000
+                - assertVisible:
+                    id: "com.coffeemeetsbagel:id/first_name"
+                - tapOn:
+                    id: "com.coffeemeetsbagel:id/first_name"
+                - eraseText: 20
+                - inputText: "Bailey"
+
+                - tapOn:
+                    id: "com.coffeemeetsbagel:id/last_name"
+                - eraseText: 20
+                - inputText: "Law"
+
+                - tapOn:
+                    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+                # Proceed
+                - runFlow:
+                    when:
+                        visible:
+                            id: "com.coffeemeetsbagel:id/primary_button"
+                    commands:
+                        - tapOn:
+                            id: "com.coffeemeetsbagel:id/primary_button"
+
+                # --- Fork: Email screen may appear ---
+                - runFlow:
+                    when:
+                        visible:
+                            id: "com.coffeemeetsbagel:id/email_input"
+                    commands:
+                        - extendedWaitUntil:
+                            visible:
+                                id: "com.coffeemeetsbagel:id/email_input"
+                            timeout: 10000
+                        - assertVisible:
+                            id: "com.coffeemeetsbagel:id/email_input"
+
+                        # IMPORTANT: focus before eraseText
+                        - tapOn:
+                            id: "com.coffeemeetsbagel:id/email_input"
+                        - eraseText: 50
+                        - inputText: "xw3@cmbtesting.cmb"
+
+                        - tapOn:
+                            id: "com.coffeemeetsbagel:id/onboarding__next"
+
+                        - extendedWaitUntil:
+                            visible:
+                                id: com.coffeemeetsbagel:id/llInput
+                            timeout: 10000
+                        - assertVisible:
+                            id: com.coffeemeetsbagel:id/llInput
+
+                        - tapOn:
+                            id: "com.coffeemeetsbagel:id/etCode6"
+                        - eraseText: 6
+                        - inputText: "000000"
+
+                        - extendedWaitUntil:
+                            visible:
+                                id: "com.coffeemeetsbagel:id/onboarding__next"
+                            timeout: 10000
+
+                # --- Fork: after email, app can show DOB OR skip to relationship ---
+
+                # Case A: DOB screen is shown
+                - runFlow:
+                    when:
+                        visible:
+                            id: "com.coffeemeetsbagel:id/onboarding_age__year"
+                    commands:
+                        - assertVisible:
+                            id: "com.coffeemeetsbagel:id/onboarding_age__year"
+                        - assertVisible:
+                            id: "com.coffeemeetsbagel:id/onboarding_age__month"
+                        - assertVisible:
+                            id: "com.coffeemeetsbagel:id/onboarding_age__day"
+
+                        # Prefer canonical runFlow syntax (less flaky parsing)
+                        - runFlow: ../helpers/set_dob_year_2000.yaml
+
+                        - tapOn:
+                            id: "com.coffeemeetsbagel:id/onboarding__next"
+
+                        - extendedWaitUntil:
+                            visible:
+                                text: "Confirm"
+                            timeout: 10000
+                        - tapOn:
+                            text: "Confirm"
+
+                # Case B: DOB was skipped → relationship goals shown
+                - runFlow:
+                    when:
+                        visible:
+                            id: "com.coffeemeetsbagel:id/marriage"
+                    commands:
+                        - assertVisible:
+                            id: "com.coffeemeetsbagel:id/marriage"
+                        - assertVisible:
+                            id: "com.coffeemeetsbagel:id/onboarding__next"
+
+                - extendedWaitUntil:
+                    visible:
+                        text: "What are you looking for?"
+                    timeout: 10000
+
+                - assertVisible:
+                    text: "What are you looking for?"
+
+                - assertVisible:
+                    id: "com.coffeemeetsbagel:id/marriage"
+                - assertVisible:
+                    id: "com.coffeemeetsbagel:id/committed_relationship"
+                - assertVisible:
+                    id: "com.coffeemeetsbagel:id/something_casual"
+                - assertVisible:
+                    id: "com.coffeemeetsbagel:id/not_sure"
+                - assertVisible:
+                    id: "com.coffeemeetsbagel:id/prefer_not_to_say_relationship"

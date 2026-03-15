@@ -1,0 +1,21 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_prompt.yaml
+
+- runFlow:
+    file: ../helpers/set_prompt_answer.yaml
+    env:
+      PROMPT_TEXT: "I like..."
+      ANSWER_TEXT: "Matcha"
+
+# Wait for Next to become visible
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+
+# Continue
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"

@@ -1,0 +1,50 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_prompt.yaml
+
+- extendedWaitUntil:
+    visible: "Looking good! Now let’s pick a prompt"
+    timeout: 10000
+
+- assertVisible: "Looking good! Now let’s pick a prompt"
+
+# Try minimum path first
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Give it a short chance to navigate
+- extendedWaitUntil:
+    visible: "What’s the highest degree you’ve earned?"
+    timeout: 10000
+    optional: true
+
+# If still blocked, fill one prompt, then continue
+- runFlow:
+    when:
+      notVisible: "What’s the highest degree you’ve earned?"
+    commands:
+      - runFlow:
+          file: ../helpers/fill_prompt_first_time.yaml
+          env:
+            PROMPT_TEXT: "I like..."
+            ANSWER_TEXT: "Matcha"
+
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/onboarding__next"
+          timeout: 10000
+
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Postcondition
+- extendedWaitUntil:
+    visible: "What’s the highest degree you’ve earned?"
+    timeout: 10000
+
+- assertVisible: "What’s the highest degree you’ve earned?"

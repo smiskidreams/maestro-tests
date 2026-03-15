@@ -1,0 +1,57 @@
+appId: com.coffeemeetsbagel
+---
+# Expects env:
+#   PROMPT_TEXT
+#   ANSWER_TEXT
+
+# Wait until prompt page is ready
+- extendedWaitUntil:
+    visible: "Looking good! Now let's pick a prompt"
+    timeout: 10000
+    optional: true
+
+# Scroll until target prompt is visible
+- evalScript: ${output.scrollAttempts = 0}
+- repeat:
+    while:
+      true: ${output.scrollAttempts < 15}
+    commands:
+      - runFlow:
+          when:
+            visible: ${PROMPT_TEXT}
+          commands:
+            - evalScript: ${output.scrollAttempts = 999}
+
+      - runFlow:
+          when:
+            notVisible: ${PROMPT_TEXT}
+          commands:
+            - swipe:
+                start: "50%,72%"
+                end: "50%,57%"
+                duration: 250
+            - waitForAnimationToEnd
+            - evalScript: ${output.scrollAttempts = output.scrollAttempts + 1}
+
+- assertVisible: ${PROMPT_TEXT}
+
+# Move prompt a bit upward so sticky Next does not block it
+- swipe:
+    start: "50%,57%"
+    end: "50%,50%"
+    duration: 200
+- waitForAnimationToEnd
+
+# Open prompt editor
+- tapOn: ${PROMPT_TEXT}
+
+# Wait for editor
+- extendedWaitUntil:
+    visible: "Done"
+    timeout: 10000
+
+# Enter answer
+- inputText: ${ANSWER_TEXT}
+
+# Save
+- tapOn: "Done"

@@ -1,0 +1,24 @@
+appId: com.coffeemeetsbagel
+---
+# Wait for the year picker to be present before swiping (prevents early swipes)
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding_age__year"
+    timeout: 10000
+
+# YEAR → 2000 (your current logic: swipe until "1999" appears)
+- repeat:
+    while:
+      notVisible: "1999"
+    commands:
+      - swipe:
+          start: "70%, 42%"
+          end: "70%, 52%"
+          duration: 300
+
+# Postcondition: we actually reached the intended year boundary
+- extendedWaitUntil:
+    visible: "1999"
+    timeout: 10000    
+
+- assertVisible: "1999"

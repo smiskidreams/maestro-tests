@@ -1,0 +1,32 @@
+appId: com.coffeemeetsbagel
+---
+# Already waited in at_ethnicity for "What's your ethnicity?" to be visible
+
+# 1) Try to confirm immediately (in case Southeast Asian is already selected)
+- extendedWaitUntil:
+    visible: 
+      id: com.coffeemeetsbagel:id/onboarding__next # Next button on Ethnicity screen
+    timeout: 10000
+
+- assertVisible: 
+    id: com.coffeemeetsbagel:id/onboarding__next
+
+- tapOn: 
+    id: com.coffeemeetsbagel:id/onboarding__next
+
+# 2) If we did NOT go to the "What should your profile show?" page, select Southeast Asian then confirm again
+- runFlow:
+    when:
+      notVisible: "What should your profile show?"
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/prof_ethn_southeast_asian"
+          timeout: 10000
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/prof_ethn_southeast_asian"
+
+      - extendedWaitUntil:
+          visible: 
+            id: com.coffeemeetsbagel:id/onboarding__next
+          timeout: 10000

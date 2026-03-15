@@ -1,0 +1,14 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_religion.yaml
+
+# Select religion and continue
+- runFlow: ../helpers/set_religion_buddhist.yaml
+
+- extendedWaitUntil:
+    visible: 
+      text: "What’s your type?" # What's your type? screen
+    timeout: 10000
+
+- assertVisible:
+    text: "What’s your type?"

@@ -1,0 +1,44 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_job_title.yaml
+
+# Continue from Job Title to Height
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# If Height screen is not visible yet, complete Job Title first
+- runFlow:
+    when:
+      notVisible: "Almost there! Mind sharing your height with us?"
+    commands:
+      - extendedWaitUntil:
+          visible: "What’s your job title?"
+          timeout: 10000
+
+      - tapOn: 
+            id: "com.coffeemeetsbagel:id/text_input"
+      - eraseText: 30
+      - inputText: "Corporate Victim"
+
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/onboarding__next"
+          timeout: 10000
+
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Postcondition: Height screen
+- extendedWaitUntil:
+    visible: "Almost there! Mind sharing your height with us?"
+    timeout: 10000
+
+- assertVisible: "Almost there! Mind sharing your height with us?"

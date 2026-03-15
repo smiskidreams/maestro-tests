@@ -1,0 +1,116 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_photos.yaml
+
+# -------- Photo 1 --------
+- tapOn:
+    id: "com.coffeemeetsbagel:id/photo_grid__photo_1"
+
+- runFlow:
+    file: ../helpers/add_photo_to_slot.yaml
+    env:
+      PHOTO_POINT: "17%,55%"
+
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/caption_input"
+    timeout: 10000
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/caption_input"
+- eraseText: 20
+- inputText: "photoshoot :)"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/done"
+
+# Give UI time to close caption screen
+- extendedWaitUntil:
+    notVisible: "photoshoot :)"
+    timeout: 5000
+    optional: true
+
+# If caption still visible → tap Done again
+- runFlow:
+    when:
+      visible: "photoshoot :)"
+    commands:
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/done"
+
+# After returning from caption
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/next_button"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/next_button"
+
+
+# -------- Photo 2 --------
+- tapOn:
+    id: "com.coffeemeetsbagel:id/photo_grid__photo_2"
+
+- runFlow:
+    file: ../helpers/add_photo_to_slot.yaml
+    env:
+      PHOTO_POINT: "17%,76%" 
+
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/caption_input"
+    timeout: 10000
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/caption_input"
+- eraseText: 20
+- inputText: "my mental state!"
+
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/done" 
+    timeout: 10000
+- tapOn:
+    id: "com.coffeemeetsbagel:id/done"
+
+# Give UI time to close caption screen
+- extendedWaitUntil:
+    notVisible: "my mental state!"
+    timeout: 5000
+    optional: true
+
+# If caption still visible → tap Done again
+- runFlow:
+    when:
+      visible: "my mental state!"
+    commands:
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/done"
+
+# Check 2 photos are successfully uploaded
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/action_button"
+      index: 0
+    timeout: 15000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/action_button"
+    index: 0
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/action_button"
+    index: 1
+
+# Continue
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/next_button"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/next_button"
+
+- extendedWaitUntil:
+    visible: "Looking good! Now let’s pick a prompt"
+    timeout: 10000
+
+- assertVisible: "Looking good! Now let’s pick a prompt"

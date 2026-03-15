@@ -1,0 +1,10 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_religion.yaml
+- runFlow: ../helpers/continue_from_religion.yaml
+
+- extendedWaitUntil:
+    visible: "What’s your type?"
+    timeout: 10000
+
+- assertVisible: "What’s your type?"

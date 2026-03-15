@@ -1,0 +1,14 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_ethnicity.yaml
+- runFlow: ../helpers/continue_from_ethnicity.yaml
+
+- extendedWaitUntil:
+    visible: "What's your religion?"
+    timeout: 10000
+
+- assertVisible: "What's your religion?"
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/prof_rel_buddhist"
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/onboarding__next"

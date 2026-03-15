@@ -1,0 +1,96 @@
+appId: com.coffeemeetsbagel
+---
+- evalScript: ${output.abortFlow = false}
+
+# Case 1: Dealbreaker already exists -> try finishing immediately
+- runFlow:
+    when:
+      visible: "Dealbreaker"
+    commands:
+      - tapOn: "I’m done"
+
+      # Wait briefly for home/paywall anchors
+      - extendedWaitUntil:
+          visible: "Suggested"
+          timeout: 5000
+          optional: true
+
+      - runFlow:
+          when:
+            visible: "Suggested"
+          commands:
+            - evalScript: ${output.abortFlow = true}
+
+      - runFlow:
+          when:
+            visible: "See my like"
+          commands:
+            - evalScript: ${output.abortFlow = true}
+
+      - runFlow:
+          when:
+            visible: "See my likes now"
+          commands:
+            - evalScript: ${output.abortFlow = true}
+
+# Case 2: Only continue configuring if we are NOT already done
+- runFlow:
+    when:
+      true: ${!output.abortFlow}
+    commands:
+      # Only open Age if still on Your Type page and Dealbreaker is not visible
+      - runFlow:
+          when:
+            visible: "What’s your type?"
+          commands:
+            - runFlow:
+                when:
+                  notVisible: "Dealbreaker"
+                commands:
+                  - tapOn: "Age"
+
+                  - extendedWaitUntil:
+                      visible: "What’s your preferred age range?"
+                      timeout: 10000
+
+                  - assertVisible: "What’s your preferred age range?"
+
+                  # swipe age picker
+                  - swipe:
+                      start: "71%,33%"
+                      end: "71%,20%"
+                      duration: 300
+
+                  # enable dealbreaker
+                  - tapOn:
+                      id: "com.coffeemeetsbagel:id/dealbreaker_switch"
+
+                  # confirm selection
+                  - tapOn: "Looks good"
+
+                  # finish preferences
+                  - tapOn: "I’m done"
+
+# Final home/paywall verification
+- extendedWaitUntil:
+    visible: "Suggested"
+    timeout: 10000
+    optional: true
+
+- runFlow:
+    when:
+      visible: "Suggested"
+    commands:
+      - assertVisible: "Suggested"
+
+- runFlow:
+    when:
+      visible: "See my like"
+    commands:
+      - assertVisible: "See my like"
+
+- runFlow:
+    when:
+      visible: "See my likes now"
+    commands:
+      - assertVisible: "See my likes now"

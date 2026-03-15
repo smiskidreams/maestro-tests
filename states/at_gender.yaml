@@ -1,0 +1,36 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_birthday_or_relationship.yaml
+
+# Tap Next on relationship screen (never tap Marriage)
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+
+- tapOn: 
+    id: "com.coffeemeetsbagel:id/marriage"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Intermediate wedding bell screen
+- extendedWaitUntil:
+    visible:
+      text: "You hear that? It’s the sound of wedding bells from our hundreds of thousands of success stories. Let’s find your person together."
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Postcondition: gender screen
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/gender_woman"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/gender_woman"
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/gender_man"

@@ -1,0 +1,32 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_ethnicity.yaml
+- runFlow: ../helpers/set_ethnicity_southeast_asian.yaml # Set ethnicity, taps Next, and goes to "What should your profile show?" screen
+
+# Now on: "What should your profile show?"
+- extendedWaitUntil:
+    visible:
+      text: "What should your profile show?"
+    timeout: 10000
+
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/text_input"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/text_input"
+
+# Deterministic overwrite
+- tapOn:
+    id: "com.coffeemeetsbagel:id/text_input"
+- eraseText: 50
+- inputText: "Chinese"
+
+# Press Next to go to Religion screen
+- extendedWaitUntil:
+    visible: 
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"

@@ -1,0 +1,14 @@
+09:26:04.513 [ INFO] maestro.cli.report.TestDebugReporter.logSystemInfo: Debug output path: C:\Users\terxi\maestro-tests\.\reports\artifacts\2026-03-12_09-25-58_1e4e0695\00_dob_valid\.maestro\tests\2026-03-12_092604
+09:26:04.516 [ INFO] MAESTRO.logSystemInfo: ---- System Info ----
+09:26:04.516 [ INFO] MAESTRO.logSystemInfo: Maestro Version: 2.1.0
+09:26:04.517 [ INFO] MAESTRO.logSystemInfo: CI: Undefined
+09:26:04.517 [ INFO] MAESTRO.logSystemInfo: OS Name: Windows 11
+09:26:04.518 [ INFO] MAESTRO.logSystemInfo: OS Version: 10.0
+09:26:04.518 [ INFO] MAESTRO.logSystemInfo: Architecture: amd64
+09:26:04.519 [ INFO] MAESTRO.logSystemInfo: Java Version: 25
+09:26:04.520 [ INFO] MAESTRO.logSystemInfo: Xcode Version: null
+09:26:04.521 [ INFO] MAESTRO.logSystemInfo: Flutter Version: Undefined
+09:26:04.523 [ INFO] MAESTRO.logSystemInfo: Flutter Channel: Undefined
+09:26:04.523 [ INFO] MAESTRO.logSystemInfo: ---------------------
+09:26:05.394 [DEBUG] io.micrometer.common.util.internal.logging.InternalLoggerFactory.newDefaultFactory: Using SLF4J as the default logging framework
+09:26:05.457 [ INFO] maestro.cli.command.TestCommand.runShardSuite: [shard 1] Selected device RFCT118FBVK using port 7001 with execution plan ExecutionPlan(flowsToRun=[C:\Users\terxi\maestro-tests\onboarding\00_dob_valid.yaml], sequence=FlowSequence(flows=[], continueOnFailure=true), workspaceConfig=WorkspaceConfig(flows=null, includeTags=null, excludeTags=null, executionOrder=null, baselineBranch=null, notifications=null, disableRetries=false, platform=PlatformConfiguration(android=AndroidConfiguration(disableAnimations=false), ios=IOSConfiguration(disableAnimations=false, snapshotKeyHonorModalViews=null)), testOutputDir=null))

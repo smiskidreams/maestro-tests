@@ -1,0 +1,24 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_gender.yaml
+
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/gender_woman"
+    timeout: 10000
+
+# Select gender (example: woman)
+- tapOn:
+    id: "com.coffeemeetsbagel:id/gender_woman"
+
+# Tap Next
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+- extendedWaitUntil:
+    visible: "Who do you want to date?"
+    timeout: 10000
+
+# Now gender preference screen should appear
+- assertVisible:
+    text: "Who do you want to date?"

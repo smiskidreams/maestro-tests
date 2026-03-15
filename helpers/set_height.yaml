@@ -1,0 +1,14 @@
+appId: com.coffeemeetsbagel
+---
+
+# 0) Ensure we are on the height screen
+- extendedWaitUntil:
+    visible: "Almost there! Mind sharing your height with us?"
+    timeout: 10000
+
+# 1) One clean swipe on the picker region (middle of wheels)
+# Swipe direction: up -> increases value
+- swipe:
+    start: "71%, 46%"
+    end:   "71%, 36%"
+    duration: 300

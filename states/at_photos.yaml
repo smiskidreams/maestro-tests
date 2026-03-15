@@ -1,0 +1,49 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_gender_preference.yaml
+
+# Select preference
+- tapOn:
+    text: "Everyone"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# If notification screen appeared, handle it
+- runFlow:
+    when:
+      visible: 
+        id: "com.coffeemeetsbagel:id/notification_header"
+        id: com.android.permissioncontroller:id/permission_message
+    commands:
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/onboarding__next"
+
+      # Give notification permission dialog up to 5 seconds to appear
+      - extendedWaitUntil:
+          visible: 
+            id: com.android.permissioncontroller:id/permission_message
+          timeout: 15000
+          optional: true
+
+      - tapOn:
+          id: com.android.permissioncontroller:id/permission_allow_button
+
+# Going onto photos screen
+- extendedWaitUntil:
+    visible: 
+        text: "Let’s get personal: add some photos and prompts so people can get to know you"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/nextButton"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/nextButton"
+
+# Now assert photo screen
+- extendedWaitUntil:
+    visible:
+      text: "Add at least 2 photos that show your face"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/photo_grid__photo_1"

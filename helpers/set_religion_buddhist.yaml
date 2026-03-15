@@ -1,0 +1,38 @@
+appId: com.coffeemeetsbagel
+---
+# Already on: "What's your religion?"
+
+# 1) Try to continue first (in case Buddhist is already selected)
+- extendedWaitUntil:
+    visible: 
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+- extendedWaitUntil:
+    visible: 
+      text: "What’s your type?"
+    timeout: 15000
+    optional: true # Loading screen that says "Taking notes..." on top of a spanner
+
+# 2) If we did NOT leave this screen, select Buddhist then try Next again
+- runFlow:
+    when:
+      visible: 
+        text: "What's your religion?" # What's your religion? text
+    commands:
+      - tapOn: 
+          id: "com.coffeemeetsbagel:id/prof_rel_buddhist"
+
+      - extendedWaitUntil:
+          visible: 
+            id: "com.coffeemeetsbagel:id/onboarding__next"
+          timeout: 10000
+
+      - tapOn: 
+          id: "com.coffeemeetsbagel:id/onboarding__next"
+    

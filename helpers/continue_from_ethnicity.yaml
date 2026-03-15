@@ -1,0 +1,70 @@
+appId: com.coffeemeetsbagel
+---
+# Already on ethnicity screen
+
+# Try Next first in case something is already selected
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# If app moved to "What should your profile show?", fill it deterministically
+- runFlow:
+    when:
+      visible:
+        id: "com.coffeemeetsbagel:id/text_input"
+    commands:
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/text_input"
+      - eraseText: 50
+      - inputText: "Chinese"
+
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/onboarding__next"
+          timeout: 10000
+
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# If still on ethnicity screen, select a fallback option and continue
+- runFlow:
+    when:
+      visible:
+        text: "What’s your ethnicity?"
+    commands:
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/prof_ethn_southeast_asian"
+
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/onboarding__next"
+          timeout: 10000
+
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/onboarding__next"
+
+      # Handle profile-show screen after fallback selection too
+      - runFlow:
+          when:
+            visible:
+              id: "com.coffeemeetsbagel:id/text_input"
+          commands:
+            - tapOn:
+                id: "com.coffeemeetsbagel:id/text_input"
+            - eraseText: 50
+            - inputText: "Chinese"
+
+            - extendedWaitUntil:
+                visible:
+                  id: "com.coffeemeetsbagel:id/onboarding__next"
+                timeout: 10000
+
+            - tapOn:
+                id: "com.coffeemeetsbagel:id/onboarding__next"

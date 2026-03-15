@@ -1,0 +1,96 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ./at_photos.yaml
+
+# Try to skip photo step if photos already exist
+- tapOn:
+    id: "com.coffeemeetsbagel:id/next_button"
+
+# If prompt screen appears, onboarding already has photos → finish
+- runFlow:
+    when:
+      visible:
+        id: "com.coffeemeetsbagel:id/question"
+        index: 0
+    commands:
+      - assertVisible:
+          id: "com.coffeemeetsbagel:id/question"
+          index: 0
+
+# Otherwise → add photos
+- runFlow:
+    when:
+      notVisible:
+        id: "com.coffeemeetsbagel:id/question"
+        index: 0
+    commands:
+
+      # Add Photo 1
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/photo_grid__photo_1"
+
+      - runFlow:
+          file: ../helpers/add_photo_to_slot.yaml
+          env:
+            PHOTO_POINT: "17%,55%"
+
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/caption_input"
+          timeout: 10000
+
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/caption_input"
+      - eraseText: 20
+      - inputText: "photoshoot :)"
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/done"
+
+      # Add Photo 2
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/photo_grid__photo_2"
+
+      - runFlow:
+          file: ../helpers/add_photo_to_slot.yaml
+          env:
+            PHOTO_POINT: "17%,76%"
+
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/caption_input"
+          timeout: 10000
+
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/caption_input"
+      - eraseText: 20
+      - inputText: "my mental state!"
+
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/done"
+          timeout: 10000
+
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/done"
+
+      # Retry done if screen didn't dismiss
+      - runFlow:
+          when:
+            notVisible:
+              id: "com.coffeemeetsbagel:id/next_button"
+          commands:
+            - extendedWaitUntil:
+                visible:
+                  id: "com.coffeemeetsbagel:id/done"
+                timeout: 10000
+            - tapOn:
+                id: "com.coffeemeetsbagel:id/done"
+
+      # Postcondition
+      - extendedWaitUntil:
+          visible:
+            id: "com.coffeemeetsbagel:id/next_button"
+          timeout: 10000
+
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/next_button"

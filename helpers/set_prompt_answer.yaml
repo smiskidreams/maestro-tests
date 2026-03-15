@@ -1,0 +1,122 @@
+appId: com.coffeemeetsbagel
+---
+# Expects env:
+#   PROMPT_TEXT: the question text, e.g. "I like..."
+#   ANSWER_TEXT: the answer to set, e.g. "Matcha"
+
+- runFlow:
+    when: 
+      visible:
+          id: com.samsung.android.honeyboard:id/layout_body_background # if keyboard is up
+    commands:
+      - tapOn:
+          id: "com.android.systemui:id/back"
+
+# 0) Give the screen a moment to be interactable (prevents early swipes right after nav)
+- extendedWaitUntil:
+    visible: "Looking good! Now let's pick a prompt"
+    timeout: 10000
+    optional: true
+
+# 1) Scroll until prompt text is visible
+- evalScript: ${output.scrollAttempts = 0}
+- repeat:
+    while:
+      true: ${output.scrollAttempts < 15} # Total 41 prompts
+    commands:
+      - runFlow:
+          when:
+            visible: ${PROMPT_TEXT}
+          commands:
+            - evalScript: ${output.scrollAttempts = 999}
+
+      - runFlow:
+          when:
+            notVisible: ${PROMPT_TEXT}
+          commands:
+            - swipe:
+                start: "50%,72%" # roughly 3 prompt rows height
+                end: "50%,57%"
+                duration: 250
+            - waitForAnimationToEnd
+            - evalScript: ${output.scrollAttempts = output.scrollAttempts + 1}
+
+- assertVisible: ${PROMPT_TEXT}
+
+# 1.5) Move the prompt slightly upward so it is not blocked by sticky Next
+- swipe:
+    start: "50%,57%" # roughly one prompt row height
+    end: "50%,50%"
+    duration: 200
+- waitForAnimationToEnd
+
+# 2) Retry tapping until the action sheet appears (Edit/Clear) OR until an editor is visible
+- evalScript: ${output.attempts = 0}
+- repeat:
+    while:
+      true: ${output.attempts < 4}
+    commands:
+      - tapOn: ${PROMPT_TEXT}
+      - evalScript: ${output.attempts = output.attempts + 1}
+
+      # Wait briefly for the sheet to appear (prevents instant check race)
+      - extendedWaitUntil:
+          visible: "Edit answer"
+          timeout: 10000
+          optional: true
+
+      # If sheet appears, break by making while condition fail next loop (we’ll check below)
+      - runFlow:
+          when:
+            visible: "Edit answer"
+          commands:
+            - evalScript: ${output.attempts = 999}
+
+# 3) If the sheet is shown, choose Edit (preferred to avoid max-5 accumulation)
+- runFlow:
+    when:
+      visible: "Edit answer"
+    commands:
+      - tapOn: "Edit answer"
+
+# Wait for editor to be ready (Done often appears only when editor is open)
+- extendedWaitUntil:
+    visible: "Done"
+    timeout: 10000
+    optional: true
+
+# 4) Toggle answer based on current value in the editor
+# Default to env ANSWER_TEXT, but override if we detect Matcha/Hojicha already present
+- evalScript: ${output.newAnswer = ANSWER_TEXT}
+
+# If current text is Matcha -> switch to Hojicha
+- runFlow:
+    when:
+      visible: "Matcha"
+    commands:
+      - evalScript: ${output.newAnswer = "Hojicha"}
+
+# If current text is Hojicha -> switch to Matcha
+- runFlow:
+    when:
+      visible: "Hojicha"
+    commands:
+      - evalScript: ${output.newAnswer = "Matcha"}
+
+# Clear existing text (use a safe upper bound)
+- eraseText: 20
+
+# Type the toggled value
+- inputText: ${output.newAnswer}
+
+# 5) Done (handle either text or id)
+- extendedWaitUntil:
+    visible: "Done"
+    timeout: 10000
+    optional: true
+    
+- runFlow:
+    when:
+      visible: "Done"
+    commands:
+      - tapOn: "Done"

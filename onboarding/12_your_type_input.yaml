@@ -1,0 +1,4 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_your_type.yaml
+- runFlow: ../helpers/set_age_preference.yaml

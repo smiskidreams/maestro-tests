@@ -1,0 +1,24 @@
+appId: com.coffeemeetsbagel
+---
+# Already on religion screen
+
+- runFlow:
+    when:
+      visible: "What's your religion?"
+    commands:
+      # Try Next first in case something is already selected
+      - tapOn: "Next"
+
+- extendedWaitUntil:
+    visible: "Taking notes..."
+    timeout: 10000
+    optional: true # Loading screen that says "Taking notes..." on top of a spanner
+
+# If still on religion screen, select fallback option and continue
+- runFlow:
+    when:
+      visible: "What's your religion?"
+    commands:
+      - tapOn:
+          id: "com.coffeemeetsbagel:id/prof_rel_buddhist"
+      - tapOn: "Next"

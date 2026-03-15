@@ -1,0 +1,26 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_education_school.yaml
+
+- extendedWaitUntil:
+    visible: "Where did you study?"
+    timeout: 10000
+- eraseText: 20
+- inputText: "NYU"
+
+# Continue to job title screen
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Postcondition: job title screen
+- extendedWaitUntil:
+    visible: "What’s your job title?"
+    timeout: 10000
+    
+- assertVisible: "What’s your job title?"

@@ -1,0 +1,56 @@
+appId: com.coffeemeetsbagel
+---
+
+# Expects:
+#   JOB_TITLE_TEXT
+
+# 1) Wait until the input exists
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/text_input"
+    timeout: 10000
+
+# 2) Force focus (tap twice + optional point tap to avoid tapping the container padding)
+- tapOn:
+    id: "com.coffeemeetsbagel:id/text_input"
+- tapOn:
+    id: "com.coffeemeetsbagel:id/text_input"
+# fallback: tap roughly where the cursor should be (top third of screen)
+- tapOn:
+    point: "55%,23%"
+
+# 3) Try select-all → delete using a KEY (not a tap)
+- longPressOn:
+    id: "com.coffeemeetsbagel:id/text_input"
+
+- runFlow:
+    when:
+      visible: "Select all"
+    commands:
+      - tapOn: "Select all"
+      - pressKey: "backspace"
+      # sometimes one backspace doesn't clear everything (selection drops),
+      # so do a big erase as a safety net
+      - eraseText: 80
+
+# 4) If no "Select all" menu, just brute-force erase
+- runFlow:
+    when:
+      notVisible: "Select all"
+    commands:
+      - eraseText: 80
+
+# 5) Type new title
+- inputText: ${JOB_TITLE_TEXT}
+
+# 6) Optional: assert the new text is present so we don't "Continue" with stale text
+- assertVisible: ${JOB_TITLE_TEXT}
+
+# 7) Tap Next
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/onboarding__next"
+    timeout: 10000
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"

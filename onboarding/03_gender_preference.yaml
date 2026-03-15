@@ -1,0 +1,25 @@
+appId: com.coffeemeetsbagel
+---
+- runFlow: ../states/at_gender_preference.yaml
+
+- extendedWaitUntil:
+    visible:
+      id: "com.coffeemeetsbagel:id/everyone"
+    timeout: 10000
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/everyone"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/onboarding__next"
+
+# Assert intermediate screen for PHOTOS
+- extendedWaitUntil:
+    visible: "Let’s get personal: add some photos and prompts so people can get to know you"
+    timeout: 10000
+
+- assertVisible:
+    id: "com.coffeemeetsbagel:id/nextButton"
+
+- tapOn:
+    id: "com.coffeemeetsbagel:id/nextButton"
